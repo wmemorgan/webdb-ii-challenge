@@ -7,7 +7,7 @@ const dbConfig = {
     filename: './data/lambda.sqlite3'
   },
   useDefaultAsNull: true,
-  // debug: true
+  debug: true
 }
 
 const db = knex(dbConfig)
@@ -44,11 +44,11 @@ router.post('/', requiredData, async (req, res) => {
 // ==== PUT ==== //
 router.put('/:id', idBodyCheck, async (req, res) => {
   try {
-    let count = await db('zoons')
+    let count = await db('zoos')
       .where({ id: req.data.id })
       .update(req.body)
     if (count > 0) {
-      let data = await db('zoos').where({ id: req.data.id })
+      let data = await db('zoos').where({ id: req.data.id }).first()
       res.send(data)
     } else throw err
   }
@@ -80,7 +80,7 @@ async function validateZoosId (req, res, next) {
 
 function requiredData (req, res, next) {
   if (!req.body || !Object.keys(req.body).length) {
-    res.status(400).json({ message: "Missing project data" })
+    res.status(400).json({ message: "Missing data" })
   } else if (!req.body.name) {
     res.status(400).json({ message: "Missing required name field." })
   } else {
