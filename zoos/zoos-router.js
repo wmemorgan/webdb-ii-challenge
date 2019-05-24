@@ -7,7 +7,7 @@ const dbConfig = {
     filename: './data/lambda.sqlite3'
   },
   useDefaultAsNull: true,
-  debug: true
+  // debug: true
 }
 
 const db = knex(dbConfig)
@@ -58,7 +58,19 @@ router.put('/:id', idBodyCheck, async (req, res) => {
 })
 
 // ==== DELETE ==== //
-
+router.delete('/:id', validateZoosId, async (req, res) => {
+  try {
+    let count = await db('zoos')
+      .where({ id: req.data.id })
+      .del()
+    if (count) {
+      res.json({ message: `${count} ${count > 1 ? 'records' : 'record'} deleted` })
+    } else throw err
+  }
+  catch (err) {
+    res.status(500).send(err.message)
+  }
+})
 
 // Custom Middleware
 async function validateZoosId (req, res, next) {
