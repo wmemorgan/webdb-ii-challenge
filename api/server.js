@@ -14,7 +14,7 @@ server.use(helmet());
 // Routes
 server.use('/api/zoos', zoosRouter)
 server.use('/', (req, res) => {
-  res.send(`<h1>Welcome to my Web DB II API server</h1>`)
+  res.send(`<h1>Welcome to my Zoos API server</h1>`)
 })
 
 module.exports = server
